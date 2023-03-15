@@ -8,7 +8,7 @@ from urllib import request
 from urllib.request import Request, urlopen
 
 
-TOKEN = "MTA4NTE5NzIyMzA3MzE2MTI3Ng.GfZe-d.Gs8GFdy48SdWI6c77eNdrStdQscX3H_d50eotM"
+TOKEN = "yourtoken"
 
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='!', intents=intents)
