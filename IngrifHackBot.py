@@ -95,6 +95,7 @@ def get_stat():
     contests_string += "Name: {}\n".format(events['name'])
     contests_string += "Country: {}\n".format(events['country'])
     contests_string += "Country Rating: {}\n".format(events['rating'][str(year)]['country_place'])
+    contests_string += "Global Rating: {}\n".format(events['rating'][str(year)]['rating_place'])
 
     return contests_string
 
