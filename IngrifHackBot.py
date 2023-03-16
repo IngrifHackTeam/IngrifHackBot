@@ -92,16 +92,9 @@ def get_stat():
     # Initialize string to return
     contests_string = "IngrifHack Stats\n\n"
 
-    for event in events:
-
-        # Iterate over the dictionary to extract
-        # info for all on-line competitions
-        if event['onsite'] == True:
-            continue
-
-        contests_string += "Name: {}\n".format(event['name'])
-        contests_string += "Country: {}\n".format(event['country'])
-        contests_string += "Rating: {}\n".format(event['rating'][year])
+    contests_string += "Name: {}\n".format(events['name'])
+    contests_string += "Country: {}\n".format(events['country'])
+    contests_string += "Country Rating: {}\n".format(events['rating'][str(year)]['country_place'])
 
     return contests_string
 
