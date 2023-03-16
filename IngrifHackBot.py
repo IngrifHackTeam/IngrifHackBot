@@ -1,5 +1,6 @@
 import io
 import aiohttp
+import datetime
 import discord,asyncio,os
 from discord.ext import commands, tasks
 from dateutil.parser import parse
@@ -8,7 +9,7 @@ from urllib import request
 from urllib.request import Request, urlopen
 
 
-TOKEN = "MTA4NTE5NzIyMzA3MzE2MTI3Ng.G1K1TK.42zQTmIW5m8HxiZXbmJQoxPeVBQBca8_WDjnNI"
+TOKEN = ""
 
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='!', intents=intents)
@@ -18,8 +19,9 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('ctf'):
-        await message.channel.send('Hello!')
+    if message.content.startswith('!scoreboard'):
+        embedVar=discord.Embed(title="STATS", description= get_stat(), color=0xff0000)
+        await message.channel.send(embed=embedVar)
 
 @tasks.loop(hours=168)
 async def myloop():
@@ -74,6 +76,33 @@ async def ctftime_contest() :
             embedVar.add_field(name="Format: ", value=event['format'], inline=False)
             contests_string += "Duration: {} Days {} Hours\n\n".format(event['duration']['days'], event['duration']['hours'])
             embedVar.add_field(name = chr(173), value = chr(173))
+    return contests_string
+
+def get_stat():
+    ctftime_url = "https://ctftime.org/api/v1/teams/193569/"
+    answ = Request(ctftime_url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"})
+    resp = urlopen(answ).read()
+    # Decode response json into utf8 then load
+    # into a dictionary using json module
+    resp_body = resp.decode('utf8')
+    events = json.loads(resp_body)
+
+    today = datetime.date.today()
+    year = today.year
+    # Initialize string to return
+    contests_string = "IngrifHack Stats\n\n"
+
+    for event in events:
+
+        # Iterate over the dictionary to extract
+        # info for all on-line competitions
+        if event['onsite'] == True:
+            continue
+
+        contests_string += "Name: {}\n".format(event['name'])
+        contests_string += "Country: {}\n".format(event['country'])
+        contests_string += "Rating: {}\n".format(event['rating'][year])
+
     return contests_string
 
 client.run(TOKEN)
