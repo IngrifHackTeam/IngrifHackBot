@@ -14,24 +14,18 @@ TOKEN = ""
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='!', intents=intents)
 
-@client.command(name='stats', description="Team Stats!")
-async def stats(message):
-    embedVar=discord.Embed(title="STATS", description= get_stat(), color=0xff0000)
-    await message.channel.send(embed=embedVar)
-
-@client.command(name='ctf', description="Next CTFs")
-async def ctfs(message):
-    embedVar = discord.Embed(title="CAPTURE THE FLAGS", description=await ctftime_contest(), color=0xff0000)
-    await message.channel.send(embed=embedVar)
-
 @client.event
 async def on_message(message):
     if message.author == client.user:
         return
 
-    #if message.content.startswith('!scoreboard'):
-     #   embedVar=discord.Embed(title="STATS", description= get_stat(), color=0xff0000)
-      #  await message.channel.send(embed=embedVar)
+    if message.content.startswith('!stat'):
+        embedVar=discord.Embed(title="STATS", description= get_stat(), color=0xff0000)
+        await message.channel.send(embed=embedVar)
+
+    if message.content.startswith('!ctf'):
+        embedVar = discord.Embed(title="CAPTURE THE FLAGS", description=await ctftime_contest(), color=0xff0000)
+        await message.channel.send(embed=embedVar)
 
 @tasks.loop(hours=24)
 async def myloop():
